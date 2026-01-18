@@ -1,4 +1,5 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { TodosStore } from './store/todos.store';
 
 @Component({
   selector: 'app-root',
@@ -6,6 +7,14 @@ import { Component, signal } from '@angular/core';
   standalone: false,
   styleUrl: './app.scss'
 })
-export class App {
-  protected readonly title = signal('ngrx-signal-store');
+export class App implements OnInit {
+  store = inject(TodosStore);
+
+  ngOnInit(): void {
+    this.loadTodos();
+  }
+
+  async loadTodos() {
+    await this.store.loadAll();
+  }
 }
